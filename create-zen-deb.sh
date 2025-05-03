@@ -1,6 +1,6 @@
 #!/bin/bash
-git clone https://github.com/huanhoahongso3-collab/zen-browser-debian.git & cd zen-browser-debian
-wget https://github.com/zen-browser/desktop/releases/latest/download/zen.linux-x86_64.tar.xz
+# git clone https://github.com/huanhoahongso3-collab/zen-browser-debian.git & cd zen-browser-debian
+# wget https://github.com/zen-browser/desktop/releases/latest/download/zen.linux-x86_64.tar.xz
 
 set -euo pipefail
 
