@@ -1,9 +1,16 @@
 #!/bin/bash
+git clone https://github.com/huanhoahongso3-collab/zen-browser-debian.git & cd zen-browser-debian
+wget https://github.com/zen-browser/desktop/releases/latest/download/zen.linux-x86_64.tar.xz
+
 set -euo pipefail
+
+REPO="zen-browser/desktop"
+LATEST_VERSION=$(curl -s "https://api.github.com/repos/$REPO/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+CLEAN_VERSION=${LATEST_VERSION#v}
 
 # === CONFIG ===
 PACKAGE_NAME="zen-browser"
-VERSION="1.11.5b"
+VERSION=${CLEAN_VERSION}
 ARCH="amd64"
 TARBALL="zen.linux-x86_64.tar.xz"
 BUILD_DIR="${PACKAGE_NAME}_${VERSION}"
