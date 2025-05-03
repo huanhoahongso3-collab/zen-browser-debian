@@ -18,11 +18,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y curl wget xz-utils dpkg-dev jq
 
-   #   - name: Clone zen-browser-debian and download release
-   #     run: |
-    #      git clone https://github.com/huanhoahongso3-collab/zen-browser-debian.git
-   #       cd zen-browser-debian
-    #      wget https://github.com/zen-browser/desktop/releases/latest/download/zen.linux-x86_64.tar.xz
+     - name: Clone zen-browser-debian and download release
+       run: |
+        git clone https://github.com/huanhoahongso3-collab/zen-browser-debian.git
+         cd zen-browser-debian
+        wget https://github.com/zen-browser/desktop/releases/latest/download/zen.linux-x86_64.tar.xz
 
       - name: Build .deb package
         working-directory: ./zen-browser-debian
