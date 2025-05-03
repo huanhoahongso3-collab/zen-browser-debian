@@ -1,0 +1,37 @@
+name: Build Zen Browser .deb Package
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build-deb:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v3
+
+      - name: Set up dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl wget xz-utils dpkg-dev jq
+
+   #   - name: Clone zen-browser-debian and download release
+   #     run: |
+    #      git clone https://github.com/huanhoahongso3-collab/zen-browser-debian.git
+   #       cd zen-browser-debian
+    #      wget https://github.com/zen-browser/desktop/releases/latest/download/zen.linux-x86_64.tar.xz
+
+      - name: Build .deb package
+        working-directory: ./zen-browser-debian
+        run: |
+          chmod +x create-deb-file.sh
+          ./create-deb-file.sh
+
+      - name: Upload .deb as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: zen-browser-deb
+          path: zen-browser-debian/*.deb
