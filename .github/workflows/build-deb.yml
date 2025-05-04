@@ -30,7 +30,7 @@ jobs:
           set -euo pipefail
           REPO="zen-browser/desktop"
           LATEST_VERSION=$(curl -s "https://api.github.com/repos/$REPO/releases/latest" | jq -r '.tag_name')
-          CLEAN_VERSION=${LATEST_VERSION#v}
+          CLEAN_VERSION=1.12.1b
           PACKAGE_NAME="zen-browser"
           VERSION=$CLEAN_VERSION
           ARCH="amd64"
