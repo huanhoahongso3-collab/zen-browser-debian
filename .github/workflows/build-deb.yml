@@ -123,5 +123,4 @@ jobs:
             -t "Zen Browser v$VERSION" \
             -n "Automated release for Zen Browser $VERSION"
           gh release upload "v$VERSION" "$FILE" --clobber
-          debuild -us -uc
           curl -F package=@"$FILE" https://1ywT7W-sX6Stf45TjMjaHM0Hkvw7udkA@push.fury.io/huanhoahongso3-collab/
