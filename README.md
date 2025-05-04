@@ -46,12 +46,16 @@ install it in the same way.
 
 
 ## How to install using APT?
-1. Add the following line to file: /etc/apt/sources.list.d/fury.list (create if not existed):
+1. Add huanhoahongso3-collab's GPG Key:
 ```
-deb [trusted=yes] https://apt.fury.io/huanhoahongso3-collab/ /
+wget -O- https://apt.fury.io/huanhoahongso3-collab/gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/fury.gpg > /dev/null
 ```
-2. Install Zen Browser via APT
+2. Add the following line to file: /etc/apt/sources.list.d/fury.list (create if not existed):
 ```
-apt install zen-browser
+echo "deb https://apt.fury.io/huanhoahongso3-collab * *" | sudo tee /etc/apt/sources.list.d/fury.list > /dev/null
+```
+3. Install Zen Browser via APT
+```
+sudo apt update && sudo apt install zen-browser
 ```
 Warning: You may need to reboot for the Zen logo to appear normally
