@@ -88,7 +88,7 @@ jobs:
           Section: web
           Priority: optional
           Architecture: $ARCH
-          Maintainer: Shariq Shahbaz <iamsh4r10@gmail.com>
+          Maintainer: huanhoahongso3-collab
           Description: Zen Browser - A privacy-focused browser that helps you browse in peace.
           EOF
 
