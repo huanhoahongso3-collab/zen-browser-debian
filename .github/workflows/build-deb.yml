@@ -106,16 +106,19 @@ jobs:
           dpkg-deb --build "$BUILD_DIR"
           # mv "${BUILD_DIR}.deb" .
 
-      - name: Create GitHub release and upload .deb
+      - name: Create GitHub Release and upload .deb
         env:
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
         run: |
-          VERSION=$(ls zen-browser-debian/*.deb | sed -E 's/.*zen-browser-([0-9a-zA-Z.]+)\.deb/\1/')
+          set -e
 
-          # Create release if not exists
-          gh release view "v$VERSION" || gh release create "v$VERSION" -t "Zen Browser v$VERSION" -n "Automated release for Zen Browser $VERSION"
+          FILE=$(ls zen-browser-debian/*.deb)
+          VERSION=$(basename "$FILE" | sed -E 's/zen-browser_([0-9a-zA-Z.]+)\.deb/\1/')
 
-          # Upload .deb
-          gh release upload "v$VERSION" zen-browser-debian/zen-browser-${VERSION} --clobber
+          gh release view "v$VERSION" || gh release create "v$VERSION" \
+            -t "Zen Browser v$VERSION" \
+            -n "Automated release for Zen Browser $VERSION"
+
+          gh release upload "v$VERSION" "$FILE" --clobber
 
 
