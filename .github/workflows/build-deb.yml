@@ -116,6 +116,6 @@ jobs:
           gh release view "v$VERSION" || gh release create "v$VERSION" -t "Zen Browser v$VERSION" -n "Automated release for Zen Browser $VERSION"
 
           # Upload .deb
-          gh release upload "v$VERSION" zen-browser-debian/zen-browser-${VERSION}.deb --clobber
+          gh release upload "v$VERSION" zen-browser-debian/zen-browser-${VERSION} --clobber
 
 
