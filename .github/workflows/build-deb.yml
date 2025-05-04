@@ -107,9 +107,6 @@ jobs:
           echo "Building .deb package..."
           dpkg-deb --build "$BUILD_DIR"
           # mv "${BUILD_DIR}.deb" .
-          # Rename the .deb package to match the repo version (e.g., a_bionic.deb)
-          mv "${BUILD_DIR}.deb" "zen-browser_${VERSION}_debian.deb"
-          echo "Built .deb package: zen-browser_${VERSION}_debian.deb"
       - name: Set .deb file path
         id: set_deb_path
         run: |
@@ -117,20 +114,6 @@ jobs:
           echo "deb_file=$DEB_FILE" >> $GITHUB_ENV
           echo "Path to .deb file: $DEB_FILE"
 
-      - name: Publish to APT repository on GitHub Pages
-        uses: MauroDruwel/apt-repo-action@v4
-        with:
-          github_token: ${{ secrets.MY_GITHUB_TOKEN }}
-          repo_supported_arch: |
-            amd64
-          repo_supported_version: |
-            bionic  # Replace with your desired Ubuntu version(s)
-          file: ${{ env.deb_file }}
-          file_target_version: debian  # Target Ubuntu version
-          public_key: ${{ secrets.APT_PUBLIC_KEY }}
-          private_key: ${{ secrets.APT_PRIVATE_KEY }}
-          key_passphrase: ${{ secrets.APT_KEY_PASSPHRASE }}
-          target_repository: "https://github.com/huanhoahongso3-collab/zen-browser-debian"
 
       - name: Upload .deb file to GitHub release
         env:
