@@ -30,7 +30,7 @@ jobs:
           set -euo pipefail
           REPO="zen-browser/desktop"
           LATEST_VERSION=$(curl -s "https://api.github.com/repos/$REPO/releases/latest" | jq -r '.tag_name')
-          CLEAN_VERSION=1.12.1b
+          CLEAN_VERSION=${LATEST_VERSION#v}
           PACKAGE_NAME="zen-browser"
           VERSION=$CLEAN_VERSION
           ARCH="amd64"
@@ -110,7 +110,6 @@ jobs:
 
           echo "Building .deb package..."
           dpkg-deb --build "$BUILD_DIR"
-          mv "${BUILD_DIR}.deb" zen-browser.deb
       - name: Create GitHub Release and upload .deb
         env:
           GH_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
