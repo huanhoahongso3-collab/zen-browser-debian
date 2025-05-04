@@ -46,7 +46,7 @@ install it in the same way.
 
 
 ## How to install using APT?
-1. Add the following file /etc/apt/sources.list.d/fury.list:
+1. Add the following line to file: /etc/apt/sources.list.d/fury.list (create if not existed):
 ```
 deb [trusted=yes] https://apt.fury.io/huanhoahongso3-collab/ /
 ```
@@ -54,3 +54,4 @@ deb [trusted=yes] https://apt.fury.io/huanhoahongso3-collab/ /
 ```
 apt install zen-browser
 ```
+Warning: You may need to reboot for the Zen logo to appear normally
