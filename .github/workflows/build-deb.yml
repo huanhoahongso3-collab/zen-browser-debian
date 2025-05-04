@@ -104,7 +104,7 @@ jobs:
 
           echo "Building .deb package..."
           dpkg-deb --build "$BUILD_DIR"
-          mv "${BUILD_DIR}.deb" .
+          # mv "${BUILD_DIR}.deb" .
 
       - name: Upload .deb artifact
         uses: actions/upload-artifact@v4
