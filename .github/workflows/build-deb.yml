@@ -19,22 +19,18 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y curl wget xz-utils dpkg-dev jq
-
       - name: Clone repo and download release
         run: |
           git clone https://github.com/huanhoahongso3-collab/zen-browser-debian.git
           cd zen-browser-debian
           wget https://github.com/zen-browser/desktop/releases/latest/download/zen.linux-x86_64.tar.xz
-
       - name: Build .deb package
         working-directory: zen-browser-debian
         run: |
           set -euo pipefail
-
           REPO="zen-browser/desktop"
           LATEST_VERSION=$(curl -s "https://api.github.com/repos/$REPO/releases/latest" | jq -r '.tag_name')
           CLEAN_VERSION=${LATEST_VERSION#v}
-
           PACKAGE_NAME="zen-browser"
           VERSION=$CLEAN_VERSION
           ARCH="amd64"
@@ -44,14 +40,11 @@ jobs:
           BIN_DIR="$BUILD_DIR/usr/local/bin"
           DESKTOP_DIR="$BUILD_DIR/usr/local/share/applications"
           ICON_BASE="$BUILD_DIR/usr/share/icons/hicolor"
-
           rm -rf "$BUILD_DIR"
           mkdir -p "$INSTALL_DIR" "$BIN_DIR" "$DESKTOP_DIR"
-
           echo "Extracting tarball..."
           tar -xf "$TARBALL"
           mv zen/* "$INSTALL_DIR"
-
           echo "Creating wrapper script..."
           mkdir -p "$BIN_DIR"
           cat << 'EOF' > "$BIN_DIR/zen"
@@ -59,14 +52,12 @@ jobs:
           /opt/zen/zen "$@"
           EOF
           chmod +x "$BIN_DIR/zen"
-
           echo "Copying icons..."
           for size in 16 32 48 64 128; do
             mkdir -p "$ICON_BASE/${size}x${size}/apps"
             cp "$INSTALL_DIR/browser/chrome/icons/default/default${size}.png" \
                "$ICON_BASE/${size}x${size}/apps/zen.png"
           done
-
           echo "Creating .desktop file..."
           mkdir -p "$DESKTOP_DIR"
           cat << 'EOF' > "$DESKTOP_DIR/zen.desktop"
@@ -81,7 +72,6 @@ jobs:
           MimeType=text/html;x-scheme-handler/http;x-scheme-handler/https;
           Categories=Network;WebBrowser;
           EOF
-
           echo "Creating control file..."
           mkdir -p "$BUILD_DIR/DEBIAN"
           cat << EOF > "$BUILD_DIR/DEBIAN/control"
@@ -93,7 +83,6 @@ jobs:
           Maintainer: huanhoahongso3-collab
           Description: Zen Browser - A privacy-focused browser that helps you browse in peace.
           EOF
-
           echo "Creating postinst script..."
           cat << 'EOF' > "$BUILD_DIR/DEBIAN/postinst"
           #!/bin/bash
@@ -103,30 +92,17 @@ jobs:
           fi
           EOF
           chmod +x "$BUILD_DIR/DEBIAN/postinst"
-
           echo "Building .deb package..."
           dpkg-deb --build "$BUILD_DIR"
           # mv "${BUILD_DIR}.deb" .
-      - name: Set .deb file path
-        id: set_deb_path
-        run: |
-          DEB_FILE=$(find . -name "*.deb")
-          echo "deb_file=$DEB_FILE" >> $GITHUB_ENV
-          echo "Path to .deb file: $DEB_FILE"
-
-
-      - name: Upload .deb file to GitHub release
+      - name: Create GitHub Release and upload .deb
         env:
           GH_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
         run: |
           set -e
-
-          DEB_FILE_PATH=$GITHUB_ENV.deb_file
-          VERSION=$(basename "$DEB_FILE_PATH" | sed -E 's/zen-browser_([0-9a-zA-Z.]+)\.deb/\1/')
-
+          FILE=$(ls zen-browser-debian/*.deb)
+          VERSION=$(basename "$FILE" | sed -E 's/zen-browser_([0-9a-zA-Z.]+)\.deb/\1/')
           gh release view "v$VERSION" || gh release create "v$VERSION" \
             -t "Zen Browser v$VERSION" \
             -n "Automated release for Zen Browser $VERSION"
-
-          gh release upload "v$VERSION" "$DEB_FILE_PATH" --clobber
-
+          gh release upload "v$VERSION" "$FILE" --clobber
