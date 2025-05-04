@@ -48,11 +48,11 @@ install it in the same way.
 ## How to install using APT?
 1. Add huanhoahongso3-collab's GPG Key:
 ```
-wget -O- https://apt.fury.io/huanhoahongso3-collab/gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/fury.gpg > /dev/null
+wget -O- https://apt.fury.io/huanhoahongso3-collab/gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/huanhoahongso3.gpg > /dev/null
 ```
 2. Add the following line to file: /etc/apt/sources.list.d/fury.list (create if not existed):
 ```
-echo "deb https://apt.fury.io/huanhoahongso3-collab * *" | sudo tee /etc/apt/sources.list.d/fury.list > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/huanhoahongso3.gpg] https://apt.fury.io/huanhoahongso3-collab/ * *" | sudo tee /etc/apt/sources.list.d/fury.list > /dev/null
 ```
 3. Install Zen Browser via APT
 ```
