@@ -51,10 +51,9 @@ jobs:
           mv zen/* "$INSTALL_DIR"
 
           echo "Creating wrapper script..."
-          cat <<EOF > "$BIN_DIR/zen"
-#!/bin/bash
-/opt/zen/zen "\$@"
-EOF
+          mkdir -p "$BIN_DIR"
+          echo '#!/bin/bash' > "$BIN_DIR/zen"
+          echo '/opt/zen/zen "$@"' >> "$BIN_DIR/zen"
           chmod +x "$BIN_DIR/zen"
 
           echo "Copying icons..."
@@ -65,7 +64,8 @@ EOF
           done
 
           echo "Creating .desktop file..."
-          cat <<EOF > "$DESKTOP_DIR/zen.desktop"
+          mkdir -p "$DESKTOP_DIR"
+          cat > "$DESKTOP_DIR/zen.desktop" << 'EOF'
 [Desktop Entry]
 Name=Zen Browser
 Comment=Experience tranquillity while browsing the web without people tracking you!
@@ -78,9 +78,9 @@ MimeType=text/html;x-scheme-handler/http;x-scheme-handler/https;
 Categories=Network;WebBrowser;
 EOF
 
-          echo "Creating control file..."
+          echo "Creating DEBIAN control files..."
           mkdir -p "$BUILD_DIR/DEBIAN"
-          cat <<EOF > "$BUILD_DIR/DEBIAN/control"
+          cat > "$BUILD_DIR/DEBIAN/control" <<EOF
 Package: $PACKAGE_NAME
 Version: $VERSION
 Section: web
@@ -90,7 +90,7 @@ Maintainer: Shariq Shahbaz <iamsh4r10@gmail.com>
 Description: Zen Browser - A privacy-focused browser that helps you browse in peace.
 EOF
 
-          cat <<'EOF' > "$BUILD_DIR/DEBIAN/postinst"
+          cat > "$BUILD_DIR/DEBIAN/postinst" << 'EOF'
 #!/bin/bash
 set -e
 if command -v gtk-update-icon-cache &>/dev/null; then
