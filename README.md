@@ -43,3 +43,14 @@ dpkg -i name-of-file.deb
 
 You can also download an already built deb file from the releases section and
 install it in the same way. 
+
+
+## How to install using APT?
+1. Add the following file /etc/apt/sources.list.d/fury.list:
+```
+deb [trusted=yes] https://apt.fury.io/huanhoahongso3-collab/ /
+```
+2. Install Zen Browser via APT
+```
+apt install zen-browser
+```
