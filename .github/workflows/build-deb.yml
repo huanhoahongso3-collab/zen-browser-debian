@@ -1,9 +1,11 @@
 name: Build Zen Browser .deb Package
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:    # Manual trigger
   push:
-    branches: [main]
+    branches: [main]   # Trigger on push to main branch
+  schedule:
+    - cron: '0 0 */2 * *' # Trigger every 2 days at midnight (UTC)
 
 jobs:
   build:
