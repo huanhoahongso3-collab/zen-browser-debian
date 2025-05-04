@@ -122,5 +122,25 @@ jobs:
             -n "Automated release for Zen Browser $VERSION"
 
           gh release upload "v$VERSION" "$FILE" --clobber
+      - name: Detect .deb filename
+        id: get_deb
+        run: |
+          FILE=$(ls zen-browser-debian/*.deb)
+          echo "deb_file=$FILE" >> $GITHUB_OUTPUT
+      - name: Publish to APT repo on GitHub Pages
+        uses: MauroDruwel/apt-repo-action@v4
+        with:
+          github_token: ${{ secrets.MY_GITHUB_TOKEN }}
+          repo_supported_arch: |
+            amd64
+          repo_supported_version: |
+            bionic
+          file: ${{ steps.get_deb.outputs.deb_file }}
+          file_target_version: bionic
+          public_key: ${{ secrets.APT_PUBLIC_KEY }}
+          private_key: ${{ secrets.APT_PRIVATE_KEY }}
+          key_passphrase: ${{ secrets.APT_KEY_PASSPHRASE }}
+          target_repository: ${{ secrets.TARGETREPOSITORY }}
+
 
 
