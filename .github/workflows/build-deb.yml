@@ -110,7 +110,7 @@ jobs:
 
           echo "Building .deb package..."
           dpkg-deb --build "$BUILD_DIR"
-          # mv "${BUILD_DIR}.deb" .
+          mv "${BUILD_DIR}.deb" zen-browser.deb
       - name: Create GitHub Release and upload .deb
         env:
           GH_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
