@@ -124,9 +124,9 @@ jobs:
             bionic  # Replace with your desired Ubuntu version(s)
           file: ${{ env.deb_file }}
           file_target_version: bionic  # Target Ubuntu version
-          public_key: ${{ secrets.GPG_PUBLIC_KEY }}
-          private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          key_passphrase: ${{ secrets.GPG_KEY_PASSPHRASE }}
+          public_key: ${{ secrets.APT_PUBLIC_KEY }}
+          private_key: ${{ secrets.APT_PRIVATE_KEY }}
+          key_passphrase: ${{ secrets.APT_KEY_PASSPHRASE }}
           target_repository: "https://github.com/huanhoahongso3-collab/zen-browser-debian-gh-pages"
 
       - name: Upload .deb file to GitHub release
