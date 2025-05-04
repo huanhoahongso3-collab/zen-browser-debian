@@ -107,37 +107,40 @@ jobs:
           echo "Building .deb package..."
           dpkg-deb --build "$BUILD_DIR"
           # mv "${BUILD_DIR}.deb" .
+      - name: Set .deb file path
+        id: set_deb_path
+        run: |
+          DEB_FILE=$(find . -name "*.deb")
+          echo "deb_file=$DEB_FILE" >> $GITHUB_ENV
+          echo "Path to .deb file: $DEB_FILE"
 
-      - name: Publish to APT repo on GitHub Pages
+      - name: Publish to APT repository on GitHub Pages
         uses: MauroDruwel/apt-repo-action@v4
         with:
           github_token: ${{ secrets.MY_GITHUB_TOKEN }}
           repo_supported_arch: |
             amd64
           repo_supported_version: |
-            bionic
-          file: "${BUILD_DIR}.deb"
-          file_target_version: bionic
-          public_key: ${{ secrets.APT_PUBLIC_KEY }}
-          private_key: ${{ secrets.APT_PRIVATE_KEY }}
-          key_passphrase: ${{ secrets.APT_KEY_PASSPHRASE }}
-          target_repository: ${{ secrets.TARGETREPOSITORY }}
-    
+            bionic  # Replace with your desired Ubuntu version(s)
+          file: ${{ env.deb_file }}
+          file_target_version: bionic  # Target Ubuntu version
+          public_key: ${{ secrets.GPG_PUBLIC_KEY }}
+          private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          key_passphrase: ${{ secrets.GPG_KEY_PASSPHRASE }}
+          target_repository: "https://github.com/huanhoahongso3-collab/zen-browser-debian-gh-pages"
 
-      - name: Create GitHub Release and upload .deb
+      - name: Upload .deb file to GitHub release
         env:
           GH_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
         run: |
           set -e
 
-          FILE=$(ls zen-browser-debian/*.deb)
-          VERSION=$(basename "$FILE" | sed -E 's/zen-browser_([0-9a-zA-Z.]+)\.deb/\1/')
+          DEB_FILE_PATH=$GITHUB_ENV.deb_file
+          VERSION=$(basename "$DEB_FILE_PATH" | sed -E 's/zen-browser_([0-9a-zA-Z.]+)\.deb/\1/')
 
           gh release view "v$VERSION" || gh release create "v$VERSION" \
             -t "Zen Browser v$VERSION" \
             -n "Automated release for Zen Browser $VERSION"
 
-          gh release upload "v$VERSION" "$FILE" --clobber
-
-
+          gh release upload "v$VERSION" "$DEB_FILE_PATH" --clobber
 
