@@ -108,24 +108,13 @@ jobs:
           dpkg-deb --build "$BUILD_DIR"
           # mv "${BUILD_DIR}.deb" .
           # Rename the .deb package to match the repo version (e.g., a_bionic.deb)
-          cp "${BUILD_DIR}.deb" "zen-browser_${VERSION}_bionic.deb"
-          echo "Built .deb package: zen-browser_${VERSION}_bionic.deb"
+          mv "${BUILD_DIR}.deb" "zen-browser_${VERSION}_debian.deb"
+          echo "Built .deb package: zen-browser_${VERSION}_debian.deb"
       - name: Set .deb file path
         id: set_deb_path
         run: |
-          # Find the .deb file that was just built
-          DEB_FILE="zen-browser_${VERSION}_bionic.deb"
-          
-          # Ensure the file exists
-          if [ ! -f "$DEB_FILE" ]; then
-            echo "Error: .deb file not found at path $DEB_FILE"
-            exit 1
-          fi
-
-          # Set the .deb file path to an environment variable for future steps
+          DEB_FILE=$(find . -name "*.deb")
           echo "deb_file=$DEB_FILE" >> $GITHUB_ENV
-          
-          # Output the path for debugging
           echo "Path to .deb file: $DEB_FILE"
 
       - name: Publish to APT repository on GitHub Pages
@@ -137,7 +126,7 @@ jobs:
           repo_supported_version: |
             bionic  # Replace with your desired Ubuntu version(s)
           file: ${{ env.deb_file }}
-          file_target_version: bionic  # Target Ubuntu version
+          file_target_version: debian  # Target Ubuntu version
           public_key: ${{ secrets.APT_PUBLIC_KEY }}
           private_key: ${{ secrets.APT_PRIVATE_KEY }}
           key_passphrase: ${{ secrets.APT_KEY_PASSPHRASE }}
