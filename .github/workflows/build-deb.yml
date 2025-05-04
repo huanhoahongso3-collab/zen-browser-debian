@@ -106,4 +106,20 @@ jobs:
             -t "Zen Browser v$VERSION" \
             -n "Automated release for Zen Browser $VERSION"
           gh release upload "v$VERSION" "$FILE" --clobber
-    
+          mkdir -p zen-browser-debian/{conf,incoming}
+          $ cat <<EOF >> conf/distributions
+          Origin: Zen
+          Label: Zen APT custom mirror
+          Suite: stable
+          Codename: bionic
+          Architectures: amd64
+          Components: main
+          Description: Debian x64 Github repository for Zen
+          EOF
+          cp "$FILE" zen-browser-debian/incoming
+          ls
+          reprepro -V \
+          --section utils \
+          --component main \
+          --priority 0 \
+          includedeb bionic incoming/"$FILE"
