@@ -18,7 +18,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y curl wget xz-utils dpkg-dev jq repepo
+          sudo apt-get install -y curl wget xz-utils dpkg-dev jq reprepro
       - name: Clone repo and download release
         run: |
           git clone https://github.com/huanhoahongso3-collab/zen-browser-debian.git
