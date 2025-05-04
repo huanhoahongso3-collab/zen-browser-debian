@@ -106,25 +106,4 @@ jobs:
             -t "Zen Browser v$VERSION" \
             -n "Automated release for Zen Browser $VERSION"
           gh release upload "v$VERSION" "$FILE" --clobber
-      - name: Set up APT repository
-        run: |
-          REPO_DIR="zen-browser-debian"
-          mkdir -p "$REPO_DIR/{conf,incoming}"
-          touch "$REPO_DIR/conf/distributions"
-          cat <<EOF > "$REPO_DIR/conf/distributions"
-          Origin: Zen Browser
-          Label: Zen Browser GitHub APT Repo
-          Suite: stable
-          Codename: bionic
-          Architectures: amd64
-          Components: main
-          Description: Zen Browser APT repository for Debian
-          EOF
-          cd "$REPO_DIR"
-          reprepro -V \
-          --section utils \
-          --component main \
-          --priority 0 \
-          includedeb bionic incoming/<package-name>_<version>.deb
-          
-
+    
