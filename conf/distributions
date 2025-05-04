@@ -1,7 +1,0 @@
-Origin: Zen 
-Label: Zen Browser
-Suite: stable
-Codename: bionic
-Architectures: amd64
-Components: main
-Description: Debian x64 github repository for Zen Browser
