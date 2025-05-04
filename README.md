@@ -9,7 +9,7 @@ for the zen browser, found at the link below for the purpose of creating deb pac
 ## Steps to recreate
 1. Clone this repository and enter the folder
 ```bash 
-git clone https://github.com/sh4r10/zen-browser-debian.git & cd zen-browser-debian
+git clone https://github.com/huanhoahongso3-collab/zen-browser-debian.git & cd zen-browser-debian
 ```
 
 2. Get the latest official tarball for the zen-browser from [here](https://github.com/zen-browser/desktop/releases). 
@@ -18,10 +18,10 @@ wget https://github.com/zen-browser/desktop/releases/latest/download/zen.linux-x
 ```
 
 3. Look through the variables at the top of the create-zen-deb.sh script, you
-   should only really need to change the version and possibly the tarball name
+   should only really need to possibly the tarball name
 ```bash
 PACKAGE_NAME="zen-browser"
-VERSION="1.11.2b"
+VERSION="1.11.2b" # Changed in fork, no need to edit
 ARCH="amd64"
 TARBALL="zen.linux-x86_64.tar.xz"
 BUILD_DIR="${PACKAGE_NAME}_${VERSION}"
@@ -58,4 +58,4 @@ echo "deb https://apt.fury.io/huanhoahongso3-collab * *" | sudo tee /etc/apt/sou
 ```
 sudo apt update && sudo apt install zen-browser
 ```
-Warning: You may need to reboot for the Zen logo to appear normally
+Note: You may need to reboot for the Zen logo to appear normally
