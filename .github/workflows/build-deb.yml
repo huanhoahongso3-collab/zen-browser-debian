@@ -92,6 +92,22 @@ jobs:
           fi
           EOF
           chmod +x "$BUILD_DIR/DEBIAN/postinst"
+          echo "Creating prerm script..."
+          cat << 'EOF' > "$BUILD_DIR/DEBIAN/prerm"
+          #!/bin/bash
+          set -e
+          rm -rf /opt/zen
+          rm -f /usr/local/bin/zen
+          rm -f /usr/local/share/applications/zen.desktop
+          for size in 16 32 48 64 128; do
+          rm -f "/usr/share/icons/hicolor/${size}x${size}/apps/zen.png"
+          done
+          if command -v gtk-update-icon-cache &>/dev/null; then
+          gtk-update-icon-cache -f /usr/share/icons/hicolor
+          fi
+          EOF
+          chmod +x "$BUILD_DIR/DEBIAN/prerm"
+
           echo "Building .deb package..."
           dpkg-deb --build "$BUILD_DIR"
           # mv "${BUILD_DIR}.deb" .
@@ -106,9 +122,3 @@ jobs:
             -t "Zen Browser v$VERSION" \
             -n "Automated release for Zen Browser $VERSION"
           gh release upload "v$VERSION" "$FILE" --clobber
-          cp "$FILE" zen-browser-debian/incoming
-          reprepro -V \
-          --section utils \
-          --component main \
-          --priority 0 \
-          includedeb bionic incoming/"$FILE"
