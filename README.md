@@ -50,7 +50,7 @@ install it in the same way.
 ```
 wget -O- https://apt.fury.io/huanhoahongso3-collab/gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/huanhoahongso3.gpg > /dev/null
 ```
-2. Add the following line to file: /etc/apt/sources.list.d/fury.list (create if not existed):
+2. Add the repo to APT at /etc/apt/sources.list.d/fury.list:
 ```
 echo "deb [signed-by=/usr/share/keyrings/huanhoahongso3.gpg] https://apt.fury.io/huanhoahongso3-collab/ * *" | sudo tee /etc/apt/sources.list.d/fury.list > /dev/null
 ```
