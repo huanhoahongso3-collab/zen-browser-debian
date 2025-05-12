@@ -52,7 +52,7 @@ wget -O- https://apt.dhp2010.is-a.dev/apt/gpg.key | gpg --dearmor | sudo tee /us
 ```
 2. Add the repo to APT at /etc/apt/sources.list.d/fury.list:
 ```
-echo "deb [signed-by=/usr/share/keyrings/huanhoahongso3.gpg] https://https://apt.dhp2010.is-a.dev/apt/ * *" | sudo tee /etc/apt/sources.list.d/fury.list > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/huanhoahongso3.gpg] https://apt.dhp2010.is-a.dev/apt/ * *" | sudo tee /etc/apt/sources.list.d/fury.list > /dev/null
 ```
 3. Install Zen Browser via APT
 ```
