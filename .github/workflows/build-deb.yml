@@ -5,7 +5,7 @@ on:
   push:
     branches: [main]   # Trigger on push to main branch
   schedule:
-    - cron: '0 0 * * *'   # 00:00 UTC
+    - cron: '0 0 */2 * *'
 
 
 jobs:
